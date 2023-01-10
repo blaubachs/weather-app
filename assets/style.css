@@ -11,6 +11,14 @@
 --unbleached-silk: hsla(17, 49%, 84%, 1);
 }
 
-* {
+/* * {
     border: 1px solid black;
+} */
+
+#grid-container {
+    border: 3px solid black;
+}
+
+#navbar {
+    border-bottom: 1px solid black;
 }
