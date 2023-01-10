@@ -1,7 +1,10 @@
 // 555fdd6ef60c3be6d13b1f047feabef9
 // http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
 
-let requestUrl =
+// current weather
+// https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
+
+let forecastUrl =
   "https://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&units=imperial&appid=555fdd6ef60c3be6d13b1f047feabef9";
 
 let inputCityUrl =
@@ -16,7 +19,7 @@ fetch(inputCityUrl)
     console.log(data);
   });
 
-fetch(requestUrl)
+fetch(forecastUrl)
   .then(function (response) {
     console.log(response);
     return response.json();

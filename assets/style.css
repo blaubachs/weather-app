@@ -10,3 +10,7 @@
 --pastel-pink-2: hsla(6, 43%, 77%, 1);
 --unbleached-silk: hsla(17, 49%, 84%, 1);
 }
+
+* {
+    border: 1px solid black;
+}
