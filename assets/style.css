@@ -22,3 +22,7 @@
 #navbar {
     border-bottom: 1px solid black;
 }
+
+#forecast-section {
+    padding-right:8%;
+}
