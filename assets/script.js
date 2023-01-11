@@ -16,6 +16,7 @@ let todayWind = $("#windSpan");
 let todayHumid = $("#humiditySpan");
 let citySpan = $("city-span");
 let saveArr = [];
+let storedCoords = [];
 
 onLoad();
 function onLoad() {
@@ -28,6 +29,7 @@ function onLoad() {
       createHistBtn.attr("type", "button");
       createHistBtn.attr("id", "previous-item");
       createHistBtn.text(genArr[i]);
+      historyDiv.append(createHistBtn);
     }
   } else {
     return;
@@ -57,7 +59,7 @@ searchBtn.on("click", function (event) {
   console.log(historyDiv.children().length);
   let city = searchInput.val().trim();
   let latLongTemp = [];
-  let storedCoords = [];
+
   if (city == "") {
     alert("Please input a city name.");
     return;
@@ -76,6 +78,14 @@ searchBtn.on("click", function (event) {
       .then(function (data) {
         latLongTemp.push(data[0].lat.toFixed(2));
         latLongTemp.push(data[0].lon.toFixed(2));
+        if (storedCoords.length >= 5) {
+          storedCoords.shift();
+
+          storedCoords.push(data[0].lat.toFixed(2), data[0].lon.toFixed(2));
+        } else {
+          storedCoords.push(data[0].lat.toFixed(2), data[0].lon.toFixed(2));
+        }
+        console.log(storedCoords);
         console.log(latLongTemp);
 
         let currentUrl =
