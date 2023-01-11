@@ -39,12 +39,40 @@ fetch(currentUrl)
   .then(function (data) {
     console.log(data);
   });
-// append button for previous searches under #previously-searched
+
+let today = dayjs().format("MM/DD/YYYY");
+let searchInput = $("#city-search");
+let searchBtn = $("#search-button");
 let historyDiv = $("#previously-searched");
-// <button class="btn btn-primary bg-secondary" type="button" id="previous-item">Button</button>
+let forecastDiv = $("#forecast-section");
+let historyBtn = $("#previous-item");
+
+function onLoad() {
+  historyDiv.html("");
+}
+
+// append button for previous searches under #previously-searched
+function createBtn() {
+  let city = searchInput.val().trim();
+  let createHistBtn = $("<button>");
+  createHistBtn.attr("class", "btn btn-primary bg-secondary");
+  createHistBtn.attr("type", "button");
+  createHistBtn.attr("id", "previous-item");
+  createHistBtn.text(city);
+  historyDiv.append(createHistBtn);
+}
+
+searchBtn.on("click", function (event) {
+  let city = searchInput.val().trim();
+  if (city == "") {
+    alert("never shouldve come here");
+  } else {
+    createBtn();
+  }
+});
 
 // append under #forecast-section
-let forecastDiv = $("#forecast-section");
+
 //   <div class="card p-0 m-1" style="width: 15rem;">
 //   <div class="card-body shadow bg-secondary rounded">
 //     <h5 class="card-title" id="city-name">City Name<span id="currentDate"> date</span></h5>
