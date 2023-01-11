@@ -39,3 +39,17 @@ fetch(currentUrl)
   .then(function (data) {
     console.log(data);
   });
+// append button for previous searches under #previously-searched
+let historyDiv = $("#previously-searched");
+// <button class="btn btn-primary bg-secondary" type="button" id="previous-item">Button</button>
+
+// append under #forecast-section
+let forecastDiv = $("#forecast-section");
+//   <div class="card p-0 m-1" style="width: 15rem;">
+//   <div class="card-body shadow bg-secondary rounded">
+//     <h5 class="card-title" id="city-name">City Name<span id="currentDate"> date</span></h5>
+//     <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+//     <img>
+//     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+//   </div>
+// </div>
