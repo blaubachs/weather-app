@@ -38,11 +38,10 @@ function onLoad() {
 }
 
 // append button for previous searches under #previously-searched
-function createBtn() {
+function createBtn(city) {
   if (historyDiv.children().length >= 5) {
     historyDiv.children().eq(0).remove();
   }
-  let city = searchInput.val().trim();
   let createHistBtn = $("<button>");
   createHistBtn.attr("class", "btn btn-primary bg-secondary");
   createHistBtn.attr("type", "button");
@@ -68,7 +67,7 @@ searchBtn.on("click", function (event) {
   console.log(historyDiv.children().length);
   let city = searchInput.val().trim();
   weatherGen(city);
-  createBtn();
+  createBtn(city);
 });
 
 function weatherGen(city) {
