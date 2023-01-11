@@ -14,7 +14,7 @@ let historyBtn = $("#previous-item");
 let todayTemp = $("#tempSpan");
 let todayWind = $("#windSpan");
 let todayHumid = $("#humiditySpan");
-let citySpan = $("city-span");
+let citySpan = $("#city-span");
 let saveArr = [];
 let storedCoords = [];
 
@@ -30,6 +30,7 @@ function onLoad() {
       createHistBtn.attr("id", "previous-item");
       createHistBtn.text(genArr[i]);
       historyDiv.append(createHistBtn);
+      storedCoords.push(genArr[i]);
     }
   } else {
     return;
@@ -47,7 +48,6 @@ function createBtn() {
   createHistBtn.attr("type", "button");
   createHistBtn.attr("id", "previous-item");
   createHistBtn.text(city);
-  saveArr.push(city);
   historyDiv.append(createHistBtn);
 
   for (i = 0; i < historyDiv.children().length; i++) {
@@ -55,16 +55,22 @@ function createBtn() {
   }
 }
 
+let city = JSON.parse(localStorage.getItem("savedButtons"));
+let coords = JSON.parse(localStorage.getItem("storedCoords"));
+
 historyDiv.on("click", function (event) {
-  let btnClicked = event.target;
-  if (btnClicked == "<button>") {
-    console.log(btnClicked.text);
-  }
+  let city = event.target.textContent;
+  weatherGen(city);
 });
 
 searchBtn.on("click", function (event) {
   console.log(historyDiv.children().length);
   let city = searchInput.val().trim();
+  weatherGen(city);
+  createBtn();
+});
+
+function weatherGen(city) {
   let latLongTemp = [];
 
   if (city == "") {
@@ -79,7 +85,6 @@ searchBtn.on("click", function (event) {
 
     fetch(inputCityUrl)
       .then(function (response) {
-        console.log(response);
         return response.json();
       })
       .then(function (data) {
@@ -92,8 +97,8 @@ searchBtn.on("click", function (event) {
         } else {
           storedCoords.push([data[0].lat.toFixed(2), data[0].lon.toFixed(2)]);
         }
-        console.log(storedCoords);
-        console.log(latLongTemp);
+
+        localStorage.setItem("storedCoords", JSON.stringify(storedCoords));
 
         let currentUrl =
           "https://api.openweathermap.org/data/2.5/weather?lat=" +
@@ -108,6 +113,10 @@ searchBtn.on("click", function (event) {
             return response.json();
           })
           .then(function (data) {
+            citySpan.text(data.name + ", " + today);
+            todayTemp.text(data.main.temp);
+            todayWind.text(data.wind.speed);
+            todayHumid.text(data.main.humidity);
             console.log(data);
           });
 
@@ -140,10 +149,8 @@ searchBtn.on("click", function (event) {
             console.log(dataForecast);
           });
       });
-
-    createBtn();
   }
-});
+}
 
 // append under #forecast-section
 function forecastCardGen(
