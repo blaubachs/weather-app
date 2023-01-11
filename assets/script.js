@@ -68,6 +68,7 @@ searchBtn.on("click", function (event) {
   console.log(historyDiv.children().length);
   let city = searchInput.val().trim();
   weatherGen(city);
+  createBtn();
 });
 
 function weatherGen(city) {
@@ -153,7 +154,7 @@ function weatherGen(city) {
             }
           });
       });
-    createBtn();
+
     document.getElementById("city-search").value = "";
   }
 }
