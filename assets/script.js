@@ -79,7 +79,7 @@ function weatherGen(city) {
   } else {
     // Define URL's to call API with
     let inputCityUrl =
-      "http://api.openweathermap.org/geo/1.0/direct?q=" +
+      "https://api.openweathermap.org/geo/1.0/direct?q=" +
       city +
       "&limit=1&appid=555fdd6ef60c3be6d13b1f047feabef9";
 
@@ -118,7 +118,7 @@ function weatherGen(city) {
             citySpan.text(data.name + ", " + today);
             todayIcon.attr(
               "src",
-              "http://openweathermap.org/img/wn/" +
+              "https://openweathermap.org/img/wn/" +
                 data.weather[0].icon +
                 "@2x.png"
             );
@@ -190,7 +190,7 @@ function forecastCardGen(
 
   createIcon.attr(
     "src",
-    "http://openweathermap.org/img/wn/" + iconSource + "@2x.png"
+    "https://openweathermap.org/img/wn/" + iconSource + "@2x.png"
   );
   createCardBody.append(createIcon);
 
