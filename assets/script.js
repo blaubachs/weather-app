@@ -30,7 +30,7 @@ function onLoad() {
       createHistBtn.attr("id", "previous-item");
       createHistBtn.text(genArr[i]);
       historyDiv.append(createHistBtn);
-      storedCoords.push(genArr[i]);
+      storedCoords.push;
     }
   } else {
     return;
@@ -48,6 +48,7 @@ function createBtn() {
   createHistBtn.attr("type", "button");
   createHistBtn.attr("id", "previous-item");
   createHistBtn.text(city);
+  saveArr.push(city);
   historyDiv.append(createHistBtn);
 
   for (i = 0; i < historyDiv.children().length; i++) {
@@ -67,7 +68,6 @@ searchBtn.on("click", function (event) {
   console.log(historyDiv.children().length);
   let city = searchInput.val().trim();
   weatherGen(city);
-  createBtn();
 });
 
 function weatherGen(city) {
@@ -109,15 +109,22 @@ function weatherGen(city) {
 
         fetch(currentUrl)
           .then(function (response) {
-            console.log(response);
             return response.json();
           })
           .then(function (data) {
+            let todayIcon = $("#today-icon");
+
             citySpan.text(data.name + ", " + today);
+            citySpan.text(data.name + ", " + today);
+            todayIcon.attr(
+              "src",
+              "http://openweathermap.org/img/wn/" +
+                data.weather[0].icon +
+                "@2x.png"
+            );
             todayTemp.text(data.main.temp);
             todayWind.text(data.wind.speed);
             todayHumid.text(data.main.humidity);
-            console.log(data);
           });
 
         let forecastUrl =
@@ -129,7 +136,6 @@ function weatherGen(city) {
 
         fetch(forecastUrl)
           .then(function (responseForecast) {
-            console.log(responseForecast);
             return responseForecast.json();
           })
           .then(function (dataForecast) {
@@ -137,7 +143,6 @@ function weatherGen(city) {
             for (let i = 0; i < 5; i++) {
               let dataIndex = i * 8 + 2;
               let listCast = dataForecast.list[dataIndex];
-              console.log(listCast);
               forecastCardGen(
                 listCast.dt_txt,
                 listCast.weather[0].icon,
@@ -146,9 +151,10 @@ function weatherGen(city) {
                 i
               );
             }
-            console.log(dataForecast);
           });
       });
+    createBtn();
+    document.getElementById("city-search").value = "";
   }
 }
 
