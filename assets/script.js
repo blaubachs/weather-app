@@ -55,6 +55,13 @@ function createBtn() {
   }
 }
 
+historyDiv.on("click", function (event) {
+  let btnClicked = event.target;
+  if (btnClicked == "<button>") {
+    console.log(btnClicked.text);
+  }
+});
+
 searchBtn.on("click", function (event) {
   console.log(historyDiv.children().length);
   let city = searchInput.val().trim();
@@ -81,9 +88,9 @@ searchBtn.on("click", function (event) {
         if (storedCoords.length >= 5) {
           storedCoords.shift();
 
-          storedCoords.push(data[0].lat.toFixed(2), data[0].lon.toFixed(2));
+          storedCoords.push([data[0].lat.toFixed(2), data[0].lon.toFixed(2)]);
         } else {
-          storedCoords.push(data[0].lat.toFixed(2), data[0].lon.toFixed(2));
+          storedCoords.push([data[0].lat.toFixed(2), data[0].lon.toFixed(2)]);
         }
         console.log(storedCoords);
         console.log(latLongTemp);
