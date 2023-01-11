@@ -4,42 +4,6 @@
 // current weather
 // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
-let currentUrl =
-  "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&units=imperial&appid=555fdd6ef60c3be6d13b1f047feabef9";
-
-let forecastUrl =
-  "https://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&units=imperial&appid=555fdd6ef60c3be6d13b1f047feabef9";
-
-let inputCityUrl =
-  "http://api.openweathermap.org/geo/1.0/direct?q=wenatchee&limit=1&appid=555fdd6ef60c3be6d13b1f047feabef9";
-
-fetch(inputCityUrl)
-  .then(function (response) {
-    console.log(response);
-    return response.json();
-  })
-  .then(function (data) {
-    console.log(data);
-  });
-
-fetch(forecastUrl)
-  .then(function (response) {
-    console.log(response);
-    return response.json();
-  })
-  .then(function (data) {
-    console.log(data);
-  });
-
-fetch(currentUrl)
-  .then(function (response) {
-    console.log(response);
-    return response.json();
-  })
-  .then(function (data) {
-    console.log(data);
-  });
-
 let today = dayjs().format("MM/DD/YYYY");
 let searchInput = $("#city-search");
 let searchBtn = $("#search-button");
@@ -63,7 +27,57 @@ function createBtn() {
 }
 
 searchBtn.on("click", function (event) {
+  // Define URL's to call API with
   let city = searchInput.val().trim();
+  let latLongTemp = [];
+  let storedCoords = [];
+
+  let inputCityUrl =
+    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    city +
+    "&limit=1&appid=555fdd6ef60c3be6d13b1f047feabef9";
+
+  fetch(inputCityUrl)
+    .then(function (response) {
+      console.log(response);
+      return response.json();
+    })
+    .then(function (data) {
+      latLongTemp.push(data[0].lat);
+      latLongTemp.push(data[0].lon);
+      storedCoords.push(latLongTemp);
+      console.log(latLongTemp);
+      console.log(data);
+    });
+
+  let currentUrl =
+    "https://api.openweathermap.org/data/2.5/weather?lat=" +
+    latLongTemp[0] +
+    "&lon=" +
+    latLongTemp[1] +
+    "&units=imperial&appid=555fdd6ef60c3be6d13b1f047feabef9";
+
+  let forecastUrl =
+    "https://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&units=imperial&appid=555fdd6ef60c3be6d13b1f047feabef9";
+
+  fetch(forecastUrl)
+    .then(function (response) {
+      console.log(response);
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+    });
+
+  fetch(currentUrl)
+    .then(function (response) {
+      console.log(response);
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+    });
+
   if (city == "") {
     alert("never shouldve come here");
   } else {
