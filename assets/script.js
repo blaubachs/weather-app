@@ -27,14 +27,14 @@ function createBtn() {
 }
 
 searchBtn.on("click", function (event) {
-  // Define URL's to call API with
   let city = searchInput.val().trim();
   let latLongTemp = [];
   let storedCoords = [];
   if (city == "") {
-    alert("never shouldve come here");
+    alert("Please input a city name.");
     return;
   } else {
+    // Define URL's to call API with
     let inputCityUrl =
       "http://api.openweathermap.org/geo/1.0/direct?q=" +
       city +
@@ -79,6 +79,9 @@ searchBtn.on("click", function (event) {
             return responseForecast.json();
           })
           .then(function (dataForecast) {
+            for (let i = 0; i < 5; i++) {
+              forecastCardGen((1)[i], (2)[i], (3)[i], (4)[i]);
+            }
             console.log(dataForecast);
           });
       });
@@ -88,6 +91,64 @@ searchBtn.on("click", function (event) {
 });
 
 // append under #forecast-section
+function forecastCardGen(
+  forecastDate,
+  forecastTemp,
+  forecastWind,
+  forecastHumid
+) {
+  let createDiv = $("<div>");
+
+  createDiv.attr("class", "card p-0 m-1");
+  createDiv.attr("style", "width: 15rem;");
+  forecastDiv.append(createDiv);
+
+  let createCardBody = $("<div>");
+
+  createCardBody.attr("class", "card-body shadow bg-secondary rounded");
+  createDiv.append(createCardBody);
+
+  let createH5 = $("<h5>");
+
+  createH5.attr("class", "card-title pt-2");
+  createH5.attr("id", "city-name date");
+  createH5.text("Date: " + forecastDate);
+  createCardBody.append(createH5);
+
+  let createIcon = $("<img>");
+
+  // createIcon.attr(
+  //   "src",
+  //   "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png"
+  // );
+  createCardBody.append(createIcon);
+
+  let createTemp = $("<h6>");
+
+  createTemp.attr("class", "card-subtitle pt-2");
+  createTemp.attr("id", "temp");
+  createTemp.text("Temp: " + forecastTemp);
+  createCardBody.append(createTemp);
+
+  let createWind = $("<h6>");
+
+  createWind.attr("class", "card-subtitle pt-2");
+  createWind.attr("id", "wind");
+  createWind.text("Wind: " + forecastWind);
+  createCardBody.append(createWind);
+
+  let createHumid = $("<h6>");
+
+  createHumid.attr("class", "card-subtitle pt-2");
+  createHumid.attr("id", "humidity");
+  createHumid.text("Humidity: " + forecastHumid);
+  createCardBody.append(createHumid);
+
+  // let createP = $("<p>");
+
+  // createP.attr("class", "card-text pt-1");
+  // createCardBody.append(createP);
+}
 
 //   <div class="card p-0 m-1" style="width: 15rem;">
 //   <div class="card-body shadow bg-secondary rounded">
