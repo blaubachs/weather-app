@@ -11,22 +11,50 @@ let historyDiv = $("#previously-searched");
 let forecastDiv = $("#forecast-section");
 let historyBtn = $("#previous-item");
 
+let todayTemp = $("#tempSpan");
+let todayWind = $("#windSpan");
+let todayHumid = $("#humiditySpan");
+let citySpan = $("city-span");
+let saveArr = [];
+
+onLoad();
 function onLoad() {
   historyDiv.html("");
+  let genArr = JSON.parse(localStorage.getItem("savedButtons"));
+  if (genArr !== null) {
+    for (i = 0; i < genArr.length; i++) {
+      let createHistBtn = $("<button>");
+      createHistBtn.attr("class", "btn btn-primary bg-secondary");
+      createHistBtn.attr("type", "button");
+      createHistBtn.attr("id", "previous-item");
+      createHistBtn.text(genArr[i]);
+    }
+  } else {
+    return;
+  }
 }
 
 // append button for previous searches under #previously-searched
 function createBtn() {
+  if (historyDiv.children().length >= 5) {
+    historyDiv.children().eq(0).remove();
+  }
   let city = searchInput.val().trim();
   let createHistBtn = $("<button>");
   createHistBtn.attr("class", "btn btn-primary bg-secondary");
   createHistBtn.attr("type", "button");
   createHistBtn.attr("id", "previous-item");
   createHistBtn.text(city);
+  saveArr.push(city);
   historyDiv.append(createHistBtn);
+
+  for (i = 0; i < historyDiv.children().length; i++) {
+    localStorage.setItem("savedButtons", JSON.stringify(saveArr));
+  }
 }
 
 searchBtn.on("click", function (event) {
+  console.log(historyDiv.children().length);
   let city = searchInput.val().trim();
   let latLongTemp = [];
   let storedCoords = [];
@@ -79,8 +107,18 @@ searchBtn.on("click", function (event) {
             return responseForecast.json();
           })
           .then(function (dataForecast) {
+            forecastDiv.html("");
             for (let i = 0; i < 5; i++) {
-              forecastCardGen((1)[i], (2)[i], (3)[i], (4)[i]);
+              let dataIndex = i * 8 + 2;
+              let listCast = dataForecast.list[dataIndex];
+              console.log(listCast);
+              forecastCardGen(
+                listCast.dt_txt,
+                listCast.weather[0].icon,
+                listCast.main.temp,
+                listCast.wind.speed,
+                i
+              );
             }
             console.log(dataForecast);
           });
@@ -93,14 +131,17 @@ searchBtn.on("click", function (event) {
 // append under #forecast-section
 function forecastCardGen(
   forecastDate,
+  iconSource,
   forecastTemp,
   forecastWind,
-  forecastHumid
+  forecastHumid,
+  idNumber
 ) {
   let createDiv = $("<div>");
 
   createDiv.attr("class", "card p-0 m-1");
   createDiv.attr("style", "width: 15rem;");
+  createDiv.attr("id", "card- " + idNumber);
   forecastDiv.append(createDiv);
 
   let createCardBody = $("<div>");
@@ -111,16 +152,16 @@ function forecastCardGen(
   let createH5 = $("<h5>");
 
   createH5.attr("class", "card-title pt-2");
-  createH5.attr("id", "city-name date");
+  createH5.attr("id", "city-name date" + idNumber);
   createH5.text("Date: " + forecastDate);
   createCardBody.append(createH5);
 
   let createIcon = $("<img>");
 
-  // createIcon.attr(
-  //   "src",
-  //   "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png"
-  // );
+  createIcon.attr(
+    "src",
+    "http://openweathermap.org/img/wn/" + iconSource + "@2x.png"
+  );
   createCardBody.append(createIcon);
 
   let createTemp = $("<h6>");
@@ -143,18 +184,4 @@ function forecastCardGen(
   createHumid.attr("id", "humidity");
   createHumid.text("Humidity: " + forecastHumid);
   createCardBody.append(createHumid);
-
-  // let createP = $("<p>");
-
-  // createP.attr("class", "card-text pt-1");
-  // createCardBody.append(createP);
 }
-
-//   <div class="card p-0 m-1" style="width: 15rem;">
-//   <div class="card-body shadow bg-secondary rounded">
-//     <h5 class="card-title" id="city-name">City Name<span id="currentDate"> date</span></h5>
-//     <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-//     <img>
-//     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-//   </div>
-// </div>
